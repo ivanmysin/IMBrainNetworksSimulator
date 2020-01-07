@@ -2,6 +2,8 @@ $ cat .gitignore
 
 test.py
 lib.py
+/.idea/
+/__pycache__/
 /CplusplusPart/*.cbp
 /CplusplusPart/*.depend
 /CplusplusPart/bin/
