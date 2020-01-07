@@ -1,0 +1,8 @@
+$ cat .gitignore
+
+test.py
+lib.py
+/CplusplusPart/*.cbp
+/CplusplusPart/*.depend
+/CplusplusPart/bin/
+/CplusplusPart/obj/
