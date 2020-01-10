@@ -2,9 +2,11 @@ $ cat .gitignore
 
 test.py
 lib.py
+.directory
 /.idea/
 /__pycache__/
 /CplusplusPart/*.cbp
 /CplusplusPart/*.depend
 /CplusplusPart/bin/
 /CplusplusPart/obj/
+/CplusplusPart/log/

@@ -7,8 +7,7 @@
 
 class Compartment;
 
-class IntercompartmentConnection : public Synapse
-{
+class IntercompartmentConnection {
     public:
         IntercompartmentConnection(Compartment * comp1_, Compartment * comp2_, double g_, double p_);
         void integrate(double, double);

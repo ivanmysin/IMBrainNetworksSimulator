@@ -1,5 +1,5 @@
-#ifndef X_INF_AND_TAU_FUNCTIONS,H_INCLUDED
-#define X_INF_AND_TAU_FUNCTIONS,H_INCLUDED
+#ifndef X_INF_AND_TAU_FUNCTIONS_H_INCLUDED
+#define X_INF_AND_TAU_FUNCTIONS_H_INCLUDED
 
 #include <math.h>
 #include <iostream>

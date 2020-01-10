@@ -27,9 +27,14 @@ class Compartment {
         vector <double> getVhist(){return Vhist;};
         void integrate(double dt, double duration);  // virtual
         void init_to_inf();
+        void set_params4Cadinamics(vector <double> params);
+        void integrate_cca(double ICa, double dt);
 
     protected:
         double V, Isyn, Iext, Iext_mean, Iext_std, Capacity;
+        double CCa, sbetaca, sfica;
+        bool is_sim_Ca;
+
         vector <BaseChannel *> channels;
         vector <double> Vhist;
 
