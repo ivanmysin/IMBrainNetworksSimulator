@@ -1,8 +1,10 @@
 #include <iostream>
 #include <fstream>
+#include <string>
 #include "Compartment.h"
 #include "BaseChannel.h"
 #include "Neuron.h"
+#include "Monitor.h"
 #include "x_inf_and_tau_functions.h"
 
 using namespace std;
@@ -13,15 +15,36 @@ Neuron * get_fs_neuron();
 int main() {
 
     cout << "hello " << endl;
+/*
+    double (*func1)(double)  = &( fs_neuron::alpha_m );
+    double (*func2)(double)  = &( fs_neuron::beta_m );
 
+    if ( func1 == func2 ) {
+        cout << "equal " << endl;
+
+    }
+*/
     Neuron * fs_n = get_fs_neuron();
-    fs_n -> integrate(0.1, 300);
+    Monitor <Neuron> * mon = new Monitor <Neuron> ( &Neuron::get_somaV, fs_n  ) ;
+
+    double t = 0;
+    double dt = 0.1;
+    double duration = 300;
+    while(t < duration) {
+        mon->keep_val();
+        fs_n -> integrate(dt, dt);
+        t += dt;
+    };
+    mon->keep_val();
+
+    string path = "./log/potential.bin";
+    mon->save2file(path);
 
     return 0;
 }
 
 
-Neuron * get_fs_neuron() {
+Neuron* get_fs_neuron() {
 
     vector <BaseChannel *> channels;
 
@@ -57,7 +80,7 @@ Neuron * get_fs_neuron() {
     // sodium_ch -> set_precomp(precomp_param);
     channels.push_back(sodium_ch);
 
-    // set_precomp(vector <double> precomp_param)  {
+    // set_precomp(vector <double> precomp_param)
     // Vmin = precomp_param[0];
     // Vmax = precomp_param[1];
     // Vstep = precomp_param[2];
@@ -70,9 +93,6 @@ Neuron * get_fs_neuron() {
 
     get_n_tau.push_back(&(fs_neuron::n_tau));
     get_n_inf.push_back(&(fs_neuron::n_inf));
-
-
-
 
     vector <double> n_gates_degrees;
     n_gates_degrees.push_back(4.0);

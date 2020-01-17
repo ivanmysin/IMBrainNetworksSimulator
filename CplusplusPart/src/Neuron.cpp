@@ -28,6 +28,13 @@ void Neuron::integrate(double dt, double duration) {
 
 }
 
+double Neuron::get_somaV() {
+
+    double V = compartments[0] -> getV();
+    return V;
+
+}
+
 Neuron::~Neuron()
 {
     //dtor

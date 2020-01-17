@@ -15,6 +15,7 @@ class Compartment;
 
 class BaseChannel {
 
+
     public:
         BaseChannel(){};
 
@@ -32,6 +33,12 @@ class BaseChannel {
 
 
     protected:
+        static vector <vector <double> > x_inf_precomputed;
+        static vector <vector <double> > T_precomputed;
+
+        // static vector <double (*)(double)> get_x_tau;
+        // static vector <double (*)(double)> get_x_inf;
+
         Compartment* compartment;
         int n_gates;
         double gmax, I, Erev;
@@ -39,10 +46,8 @@ class BaseChannel {
         vector <double> gates, gates_degrees;
         vector <double (*)(double)> get_x_tau;
         vector <double (*)(double)> get_x_inf;
-
-        vector <vector <double> > x_inf_precomputed;
-        vector <vector <double> > T_precomputed;
         double Vmin, Vmax, Vstep, dt_precomp;
+        // vector <int> idx_gates;
 
 };
 

@@ -25,6 +25,7 @@ class Neuron
     public:
         Neuron(vector <Compartment *>, vector <IntercompartmentConnection *>);
         Neuron( Compartment * );
+        double get_somaV();
         void integrate(double dt, double duration);
         virtual ~Neuron();
 

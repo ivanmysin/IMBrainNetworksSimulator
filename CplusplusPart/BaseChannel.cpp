@@ -1,20 +1,17 @@
 #include "BaseChannel.h"
 
+vector <vector <double> > BaseChannel::x_inf_precomputed;
+vector <vector <double> > BaseChannel::T_precomputed;
+
 
 BaseChannel::BaseChannel(double gmax_, double Erev_, bool is_Ca_, int n_gates_, vector <double (*)(double)> get_x_tau_, vector <double (*)(double)> get_x_inf_, vector <double> gates_degrees_) {
 
     gmax = gmax_;
     Erev = Erev_;
     n_gates = n_gates_;
-
     isCa = is_Ca_;
-
     gates = vector<double>(n_gates);
-
-
     get_x_tau = get_x_tau_;
-
-
     get_x_inf = get_x_inf_;
     gates_degrees = gates_degrees_;
 
