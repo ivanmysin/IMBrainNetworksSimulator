@@ -1,7 +1,7 @@
 #include "Network.h"
 
 
-Network::Network(vector <Compartment *> neurons_, vector <Synapse *> synapses_) {
+Network::Network(vector <Neuron *> neurons_, vector <Synapse *> synapses_) {
 
     neurons = neurons_;
     synapses = synapses_;
@@ -10,7 +10,7 @@ Network::Network(vector <Compartment *> neurons_, vector <Synapse *> synapses_) 
 
 
 
-void Network::add_neuron(Compartment * neuron) {
+void Network::add_neuron(Neuron * neuron) {
 
     neurons.push_back(neuron);
 
@@ -19,6 +19,12 @@ void Network::add_neuron(Compartment * neuron) {
 void Network::add_synapse(Synapse * synapse) {
 
     synapses.push_back(synapse);
+
+}
+
+void Network::add_monitor(BaseMonitor * monitor) {
+
+    monitors.push_back(monitor);
 
 }
 
@@ -44,7 +50,7 @@ void Network::integrate (double dt, double duration) {
 
         for (int i = 0; i < neurons.size(); i++) { // integrate all neurins by one time step
             neurons[i]->integrate(dt, dt);
-            // neurons[i]->checkFired(t);
+            //bool is_fired = neurons[i]->checkFired();
         }
 
         for (int i = 0; i < synapses.size(); i++) { // integrate all synapses by one time step

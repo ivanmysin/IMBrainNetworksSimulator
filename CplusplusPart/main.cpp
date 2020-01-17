@@ -6,6 +6,8 @@
 #include "Neuron.h"
 #include "Monitor.h"
 #include "x_inf_and_tau_functions.h"
+#include "Network.h"
+
 
 using namespace std;
 
@@ -14,18 +16,27 @@ Neuron * get_fs_neuron();
 
 int main() {
 
-    cout << "hello " << endl;
-/*
-    double (*func1)(double)  = &( fs_neuron::alpha_m );
-    double (*func2)(double)  = &( fs_neuron::beta_m );
+    cout << "Hello from simulator!" << endl;
 
-    if ( func1 == func2 ) {
-        cout << "equal " << endl;
 
+    Network* net = new Network();
+
+
+    // Neuron * fs_n = get_fs_neuron();
+    // net->add_neuron(fs_n);
+
+    for (int i=0; i<1; i++) {
+        Neuron * fs_n = get_fs_neuron();
+        Monitor <Neuron> * mon = new Monitor <Neuron> ( &Neuron::get_somaV, fs_n  ) ;
+        net->add_neuron(fs_n);
+        net->add_monitor(mon);
     }
-*/
-    Neuron * fs_n = get_fs_neuron();
-    Neuron * fs_n2 = get_fs_neuron();
+
+    net->integrate(0.1, 300);
+
+
+
+/*   Neuron * fs_n2 = get_fs_neuron();
 
     Monitor <Neuron> * mon1 = new Monitor <Neuron> ( &Neuron::get_somaV, fs_n  ) ;
     Monitor <Neuron> * mon2 = new Monitor <Neuron> ( &Neuron::get_somaV, fs_n2  ) ;
@@ -48,7 +59,7 @@ int main() {
 
     path = "./log/potential2.bin";
     mon2->save2file(path);
-
+*/
     cout << "Calutations are finished! " << endl;
 
     return 0;
@@ -88,7 +99,7 @@ Neuron* get_fs_neuron() {
     precomp_param.push_back(0.1);
 
     BaseChannel * sodium_ch = new BaseChannel(55.0, 50.0, false, get_mh_tau, get_mh_inf, mh_gates_degrees);
-    sodium_ch -> set_precomp(precomp_param);
+    // sodium_ch -> set_precomp(precomp_param);
     channels.push_back(sodium_ch);
 
     // set_precomp(vector <double> precomp_param)
@@ -111,7 +122,7 @@ Neuron* get_fs_neuron() {
 
      // double gmax_, double Erev_, int n_gates_, vector <double (*)(double)> get_x_tau_, vector <double (*)(double)> get_x_inf_, vector <double> gates_degrees
     BaseChannel * potassium_ch = new BaseChannel(8.0, -90.0, false, get_n_tau, get_n_inf, n_gates_degrees);
-    potassium_ch -> set_precomp(precomp_param);
+    // potassium_ch -> set_precomp(precomp_param);
     channels.push_back(potassium_ch);
 
 

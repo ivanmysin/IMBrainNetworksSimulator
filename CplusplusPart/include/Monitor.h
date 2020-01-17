@@ -13,20 +13,16 @@
 using namespace std;
 
 
-template <typename T>
+class BaseMonitor {
 
-class Monitor
-{
     public:
-        Monitor( double (T::*getter_)(),  T * neuron_ ){
-            getter = getter_;
-            neuron =  neuron_;
-            vector <double> kept_vals;
-        };
-        void keep_val() {
-            double val = (neuron->*getter)();
-            kept_vals.push_back(val);
-        };
+        BaseMonitor(){};
+        virtual ~BaseMonitor(){};
+
+    protected:
+        vector <double> kept_vals;
+        virtual void keep_val() {};
+
         void save2file(string path) {
             ofstream fs;
             fs.open(path, ios::out | ios::binary);
@@ -34,12 +30,31 @@ class Monitor
             fs.close();
         };
 
+
+};
+
+
+template <typename T>
+
+class Monitor : public BaseMonitor
+{
+    public:
+        Monitor( double (T::*getter_)(),  T * obj_ ){
+            getter = getter_;
+            obj =  obj_;
+            vector <double> kept_vals;
+        };
+        void keep_val() {
+            double val = (obj->*getter)();
+            kept_vals.push_back(val);
+        };
+
         virtual ~Monitor(){};
 
     protected:
         double (T::*getter)() ;
-        T * neuron;
-        vector <double> kept_vals;
+        T * obj;
+        // vector <double> kept_vals;
 
     private:
 };
