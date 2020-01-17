@@ -19,7 +19,7 @@ class BaseChannel {
     public:
         BaseChannel(){};
 
-        BaseChannel(double, double, bool, int, vector <double (*)(double)>, vector <double (*)(double)>, vector <double>);
+        BaseChannel(double, double, bool, vector <double (*)(double)>, vector <double (*)(double)>, vector <double>);
         BaseChannel(double, double);
         ~BaseChannel(){};
 
@@ -36,18 +36,18 @@ class BaseChannel {
         static vector <vector <double> > x_inf_precomputed;
         static vector <vector <double> > T_precomputed;
 
-        // static vector <double (*)(double)> get_x_tau;
-        // static vector <double (*)(double)> get_x_inf;
+        static vector <double (*)(double)> get_x_tau;
+        static vector <double (*)(double)> get_x_inf;
 
         Compartment* compartment;
         int n_gates;
         double gmax, I, Erev;
         bool isCa, is_pre_comp;
         vector <double> gates, gates_degrees;
-        vector <double (*)(double)> get_x_tau;
-        vector <double (*)(double)> get_x_inf;
+        // vector <double (*)(double)> get_x_tau;
+        // vector <double (*)(double)> get_x_inf;
         double Vmin, Vmax, Vstep, dt_precomp;
-        // vector <int> idx_gates;
+        vector <int> idx_of_gates;
 
 };
 

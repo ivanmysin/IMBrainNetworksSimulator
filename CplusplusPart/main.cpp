@@ -25,20 +25,31 @@ int main() {
     }
 */
     Neuron * fs_n = get_fs_neuron();
-    Monitor <Neuron> * mon = new Monitor <Neuron> ( &Neuron::get_somaV, fs_n  ) ;
+    Neuron * fs_n2 = get_fs_neuron();
+
+    Monitor <Neuron> * mon1 = new Monitor <Neuron> ( &Neuron::get_somaV, fs_n  ) ;
+    Monitor <Neuron> * mon2 = new Monitor <Neuron> ( &Neuron::get_somaV, fs_n2  ) ;
 
     double t = 0;
     double dt = 0.1;
     double duration = 300;
     while(t < duration) {
-        mon->keep_val();
+        mon1->keep_val();
+        mon2->keep_val();
         fs_n -> integrate(dt, dt);
+        fs_n2 -> integrate(dt, dt);
         t += dt;
     };
-    mon->keep_val();
+    mon1->keep_val();
+    mon2->keep_val();
 
     string path = "./log/potential.bin";
-    mon->save2file(path);
+    mon1->save2file(path);
+
+    path = "./log/potential2.bin";
+    mon2->save2file(path);
+
+    cout << "Calutations are finished! " << endl;
 
     return 0;
 }
@@ -76,8 +87,8 @@ Neuron* get_fs_neuron() {
     precomp_param.push_back(0.01);
     precomp_param.push_back(0.1);
 
-    BaseChannel * sodium_ch = new BaseChannel(55.0, 50.0, false, 2, get_mh_tau, get_mh_inf, mh_gates_degrees);
-    // sodium_ch -> set_precomp(precomp_param);
+    BaseChannel * sodium_ch = new BaseChannel(55.0, 50.0, false, get_mh_tau, get_mh_inf, mh_gates_degrees);
+    sodium_ch -> set_precomp(precomp_param);
     channels.push_back(sodium_ch);
 
     // set_precomp(vector <double> precomp_param)
@@ -99,8 +110,8 @@ Neuron* get_fs_neuron() {
 
 
      // double gmax_, double Erev_, int n_gates_, vector <double (*)(double)> get_x_tau_, vector <double (*)(double)> get_x_inf_, vector <double> gates_degrees
-    BaseChannel * potassium_ch = new BaseChannel(8.0, -90.0, false, 1, get_n_tau, get_n_inf, n_gates_degrees);
-    // potassium_ch -> set_precomp(precomp_param);
+    BaseChannel * potassium_ch = new BaseChannel(8.0, -90.0, false, get_n_tau, get_n_inf, n_gates_degrees);
+    potassium_ch -> set_precomp(precomp_param);
     channels.push_back(potassium_ch);
 
 
