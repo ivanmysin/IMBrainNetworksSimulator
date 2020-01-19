@@ -1,7 +1,7 @@
 #ifndef BASESYNAPSE_H_INCLUDED
 #define BASESYNAPSE_H_INCLUDED
 
-
+#include <queue>
 #include <iostream>
 #include <math.h>
 #include <vector>
@@ -22,6 +22,10 @@ class Synapse
         virtual ~Synapse();
 
     protected:
+
+
+        int delay;
+        queue <double> v_delay;
     private:
         // param of synapse
         double teta;

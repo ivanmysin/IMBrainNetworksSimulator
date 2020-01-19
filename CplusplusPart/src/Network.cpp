@@ -50,11 +50,19 @@ void Network::integrate (double dt, double duration) {
 
         for (int i = 0; i < neurons.size(); i++) { // integrate all neurins by one time step
             neurons[i]->integrate(dt, dt);
-            //bool is_fired = neurons[i]->checkFired();
+            bool is_fired = neurons[i]->check_is_fired();
+            if (is_fired) {
+                neurons_ids_fired.push_back(i);
+                neurons_times_fired.push_back(t);
+            }
         }
 
         for (int i = 0; i < synapses.size(); i++) { // integrate all synapses by one time step
             synapses[i]->integrate(dt, dt);
+        }
+
+        for (int i = 0; i < monitors.size(); i++) { // integrate all synapses by one time step
+             monitors[i]->keep_val();
         }
 
         t+=dt;

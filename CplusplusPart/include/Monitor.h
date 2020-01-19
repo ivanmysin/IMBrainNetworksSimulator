@@ -18,18 +18,16 @@ class BaseMonitor {
     public:
         BaseMonitor(){};
         virtual ~BaseMonitor(){};
-
-    protected:
-        vector <double> kept_vals;
-        virtual void keep_val() {};
-
         void save2file(string path) {
             ofstream fs;
             fs.open(path, ios::out | ios::binary);
             for (const auto &val : kept_vals) fs.write((char*) &val, sizeof (val));
             fs.close();
         };
+        virtual void keep_val() {};
 
+    protected:
+        vector <double> kept_vals;
 
 };
 
@@ -45,8 +43,12 @@ class Monitor : public BaseMonitor
             vector <double> kept_vals;
         };
         void keep_val() {
+
             double val = (obj->*getter)();
+            // cout << "hello from keep val" << endl;
             kept_vals.push_back(val);
+
+
         };
 
         virtual ~Monitor(){};
@@ -54,7 +56,6 @@ class Monitor : public BaseMonitor
     protected:
         double (T::*getter)() ;
         T * obj;
-        // vector <double> kept_vals;
 
     private:
 };

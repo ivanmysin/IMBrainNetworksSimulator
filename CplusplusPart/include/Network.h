@@ -24,6 +24,11 @@ class Network
         void add_neuron(Neuron * neuron);
         void add_synapse(Synapse * synapse);
         void add_monitor(BaseMonitor * monitor);
+
+        Neuron* get_neuronIdx(int idx) {return neurons[idx];}
+        Synapse* get_synapseIdx(int idx) {return synapses[idx];}
+        BaseMonitor* get_monitorIdx(int idx) {return monitors[idx];}
+
         // void saveRaster (const char*);
         // vector <double>  getContiniousFiring (int neuronInd, double dt, double duraction);
         // void saveMeanFiring (const char*, vector <int>, vector <int>, double, double);
@@ -35,6 +40,11 @@ class Network
         vector <Neuron* > neurons;        // neurons in model
         vector <Synapse* > synapses;      // synapses in model
         vector <BaseMonitor *> monitors;
+
+
+        vector <int> neurons_ids_fired;
+        vector <double> neurons_times_fired;
+
 };
 
 #endif // NETWORK_H

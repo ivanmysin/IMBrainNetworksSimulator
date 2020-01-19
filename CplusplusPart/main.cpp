@@ -22,44 +22,33 @@ int main() {
     Network* net = new Network();
 
 
-    // Neuron * fs_n = get_fs_neuron();
-    // net->add_neuron(fs_n);
-
-    for (int i=0; i<1; i++) {
+    for (int i = 0; i < 2; i++) {
         Neuron * fs_n = get_fs_neuron();
-        Monitor <Neuron> * mon = new Monitor <Neuron> ( &Neuron::get_somaV, fs_n  ) ;
+        BaseMonitor * mon = new Monitor <Neuron> ( &Neuron::get_somaV, fs_n  ) ;
+
+        BaseChannel * ch = fs_n->get_compartmentIdx(0)->get_channelIdx(2);
+
+        Monitor <BaseChannel> * ch_mon = new Monitor <BaseChannel> (&BaseChannel::get_gate, ch);
         net->add_neuron(fs_n);
         net->add_monitor(mon);
+        net->add_monitor(ch_mon);
     }
 
     net->integrate(0.1, 300);
 
+    BaseMonitor * mon = net->get_monitorIdx(2);
+    BaseMonitor * ch_mon = net->get_monitorIdx(3);
 
 
-/*   Neuron * fs_n2 = get_fs_neuron();
 
-    Monitor <Neuron> * mon1 = new Monitor <Neuron> ( &Neuron::get_somaV, fs_n  ) ;
-    Monitor <Neuron> * mon2 = new Monitor <Neuron> ( &Neuron::get_somaV, fs_n2  ) ;
 
-    double t = 0;
-    double dt = 0.1;
-    double duration = 300;
-    while(t < duration) {
-        mon1->keep_val();
-        mon2->keep_val();
-        fs_n -> integrate(dt, dt);
-        fs_n2 -> integrate(dt, dt);
-        t += dt;
-    };
-    mon1->keep_val();
-    mon2->keep_val();
 
     string path = "./log/potential.bin";
-    mon1->save2file(path);
+    mon->save2file(path);
 
-    path = "./log/potential2.bin";
-    mon2->save2file(path);
-*/
+    path = "./log/gate.bin";
+    ch_mon->save2file(path);
+
     cout << "Calutations are finished! " << endl;
 
     return 0;

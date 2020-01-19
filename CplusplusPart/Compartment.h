@@ -29,6 +29,9 @@ class Compartment {
         void init_to_inf();
         void set_params4Cadinamics(vector <double> params);
         void integrate_cca(double ICa, double dt);
+        BaseChannel* get_channelIdx(int idx) {return channels[idx];}
+        double get_Isyn(){return Isyn;};
+        double get_CCa(){return CCa;};
 
     protected:
         double V, Isyn, Iext, Iext_mean, Iext_std, Capacity;

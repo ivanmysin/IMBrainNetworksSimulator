@@ -3,6 +3,9 @@
 Neuron::Neuron(vector <Compartment *> compartments_,  vector <IntercompartmentConnection *>connections_) {
     compartments = compartments_;
     connections = connections_;
+
+    Vth = 0;
+    countSp = true;
 }
 
 
@@ -32,6 +35,25 @@ double Neuron::get_somaV() {
 
     double V = compartments[0] -> getV();
     return V;
+
+}
+
+
+bool Neuron::check_is_fired() {
+
+    double V = compartments[0] -> getV();
+    bool isFired = false;
+    if (countSp || V >= Vth) {
+        isFired = true;
+        countSp = false;
+    }
+
+    if (V < Vth) {
+        countSp = true;
+    }
+
+
+    return isFired;
 
 }
 

@@ -30,6 +30,7 @@ class BaseChannel {
         // void set_isCa(bool isCa_);
         double get_current();
         void set_precomp(vector <double> precomp_param);
+        double get_gate(){return gates[0];};
 
 
     protected:
