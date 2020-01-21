@@ -16,13 +16,13 @@ class Synapse
 {
     public:
         Synapse(){};
-        Synapse(Compartment* pre_, Compartment* post_, const vector <double>&);
+        Synapse(Compartment* pre_, Compartment* post_, int, const vector <double>&);
         void setSynapseProperies(char type, double w_, Compartment* pre_, Compartment* post_);
         void integrate (double dt, double duraction);
         virtual ~Synapse();
 
     protected:
-
+        double get_Vpre();
 
         int delay;
         queue <double> v_delay;

@@ -4,6 +4,7 @@
 #include "Compartment.h"
 #include "BaseChannel.h"
 #include "Neuron.h"
+#include "BaseSynapse.h"
 #include "Monitor.h"
 #include "x_inf_and_tau_functions.h"
 #include "Network.h"
@@ -25,29 +26,45 @@ int main() {
     for (int i = 0; i < 2; i++) {
         Neuron * fs_n = get_fs_neuron();
         BaseMonitor * mon = new Monitor <Neuron> ( &Neuron::get_somaV, fs_n  ) ;
+        // BaseChannel * ch = fs_n->get_compartmentIdx(0)->get_channelIdx(2);
 
-        BaseChannel * ch = fs_n->get_compartmentIdx(0)->get_channelIdx(2);
-
-        Monitor <BaseChannel> * ch_mon = new Monitor <BaseChannel> (&BaseChannel::get_gate, ch);
+        // Monitor <BaseChannel> * ch_mon = new Monitor <BaseChannel> (&BaseChannel::get_gate, ch);
         net->add_neuron(fs_n);
         net->add_monitor(mon);
-        net->add_monitor(ch_mon);
+        // net->add_monitor(ch_mon);
     }
+
+    Compartment* pre = net->get_neuronIdx(0)->get_compartmentIdx(0);
+    Compartment* post = net->get_neuronIdx(1)->get_compartmentIdx(0);
+
+    vector <double> params = vector <double>();
+    params.push_back(0.0); // Erev
+    params.push_back(0.005); // gbarS
+    params.push_back(10.0); // w
+    params.push_back(1.1); // alpha_s
+    params.push_back(0.19); // beta_s
+    params.push_back(2.0); // teta
+    params.push_back(5.0); // K
+
+    Synapse* syn = new Synapse(pre, post, 10, params);
+    net->add_synapse(syn);
+
+
 
     net->integrate(0.1, 300);
 
-    BaseMonitor * mon = net->get_monitorIdx(2);
-    BaseMonitor * ch_mon = net->get_monitorIdx(3);
+    BaseMonitor * mon1 = net->get_monitorIdx(0);
+    BaseMonitor * mon2 = net->get_monitorIdx(1);
 
 
 
 
 
-    string path = "./log/potential.bin";
-    mon->save2file(path);
+    string path = "./log/potential1.bin";
+    mon1->save2file(path);
 
-    path = "./log/gate.bin";
-    ch_mon->save2file(path);
+    path = "./log/potential2.bin";
+    mon2->save2file(path);
 
     cout << "Calutations are finished! " << endl;
 

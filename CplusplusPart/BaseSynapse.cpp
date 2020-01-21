@@ -1,18 +1,18 @@
 #include "BaseSynapse.h"
 
 
-Synapse::Synapse(Compartment* pre_, Compartment* post_, const vector <double>& params)
+Synapse::Synapse(Compartment* pre_, Compartment* post_, int delay_, const vector <double>& params)
 {
     pre = pre_;
     post = post_;
-    delay = int( params[0] );
-    Erev = params[1];
-    gbarS = params[2];
-    w = params[3];
-    alpha_s = params[4];
-    beta_s = params[5];
-    teta = params[6];
-    K = params[7];
+    delay = delay_;
+    Erev = params[0];
+    gbarS = params[1];
+    w = params[2];
+    alpha_s = params[3];
+    beta_s = params[4];
+    teta = params[5];
+    K = params[6];
     S = 0;
     Isyn = 0;
 
@@ -28,7 +28,8 @@ Synapse::~Synapse()
     //dtor
 }
 
-void Synapse::integrate(double dt, double duraction) {
+double Synapse::get_Vpre(){
+
     double Vpre; // V of pre neuron
 
     if (delay == 0) {
@@ -38,6 +39,14 @@ void Synapse::integrate(double dt, double duraction) {
         v_delay.pop();
         v_delay.push(post -> getV());
     };
+
+    return Vpre;
+
+};
+
+
+void Synapse::integrate(double dt, double duraction) {
+    double Vpre = get_Vpre(); // V of pre neuron
 
     if (Vpre < -30 && S < 0.005) {
         S = 0;
@@ -49,6 +58,6 @@ void Synapse::integrate(double dt, double duraction) {
     double S_0 = alpha_s * F/(alpha_s * F + beta_s);
     double tau_s = 1/(alpha_s * F + beta_s);
     S = S_0 -(S_0 - S) * exp(-duraction / tau_s);
-    Isyn = w * gbarS * S * (Vpost - Erev);
+    Isyn = w * gbarS * S * (Erev - Vpost);
     post -> addIsyn(Isyn); // Isyn for post neuron
 }
