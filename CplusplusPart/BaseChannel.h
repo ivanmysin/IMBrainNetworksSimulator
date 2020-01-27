@@ -30,10 +30,14 @@ class BaseChannel {
         // void set_isCa(bool isCa_);
         double get_current();
         void set_precomp(vector <double> precomp_param);
-        double get_gate(){return gates[0];};
+        double get_gate(){return gates[0];}; // !!!!!!!
+
+        void set_is_useCCainInfTau_by_idx(int idx, bool is_useCa){is_useCCainInfTau[idx] = is_useCa;};
+        void set_ca_sensytive(bool sensitive){is_ca_sensytive = sensitive;};
 
 
     protected:
+        void changeIbyCa();
         static vector <vector <double> > x_inf_precomputed;
         static vector <vector <double> > T_precomputed;
 
@@ -43,10 +47,9 @@ class BaseChannel {
         Compartment* compartment;
         int n_gates;
         double gmax, I, Erev;
-        bool isCa, is_pre_comp;
+        bool isCa, is_ca_sensytive;
+        vector <bool> is_useCCainInfTau, is_pre_comp;
         vector <double> gates, gates_degrees;
-        // vector <double (*)(double)> get_x_tau;
-        // vector <double (*)(double)> get_x_inf;
         double Vmin, Vmax, Vstep, dt_precomp;
         vector <int> idx_of_gates;
 

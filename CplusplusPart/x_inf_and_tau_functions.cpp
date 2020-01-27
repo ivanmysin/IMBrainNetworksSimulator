@@ -275,13 +275,13 @@ double ca1_neuron_params::alpha_q(double CCa) {
     return alpha;
 };
 
-double ca1_neuron_params::beta_q(double V) {
+double ca1_neuron_params::beta_q(double CCa) {
     return 0.001;
 };
 
-double ca1_neuron_params::q_inf(double V) {
-    double alpha = alpha_q(V);
-    double beta = beta_q(V);
+double ca1_neuron_params::q_inf(double CCa) {
+    double alpha = alpha_q(CCa);
+    double beta = beta_q(CCa);
     double q_inf = alpha / (alpha + beta);
     return q_inf;
 };

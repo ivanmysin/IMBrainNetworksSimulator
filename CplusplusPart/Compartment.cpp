@@ -30,7 +30,6 @@ Compartment::Compartment(vector<double> main_params, vector <BaseChannel *> chan
 void Compartment::set_params4Cadinamics(vector <double> params_ca) {
 
     is_sim_Ca = true;
-
     CCa = params_ca[0];
     sbetaca = params_ca[1];
     sfica = params_ca[2];
@@ -42,9 +41,9 @@ void Compartment::set_params4Cadinamics(vector <double> params_ca) {
 void Compartment::integrate_cca(double ICa, double dt) {
 
     double k1 = CCa;
-    double k2 = k1 + 0.5 * dt * (-sfica * ICa - k1 * sbetaca);
-    double k3 = k2 + 0.5 * dt * (-sfica * ICa - k2 * sbetaca);
-    double k4 = k1 + dt * (-sfica * ICa - k1 * sbetaca);
+    double k2 = k1 + 0.5 * dt * (sfica * ICa - k1 * sbetaca);
+    double k3 = k2 + 0.5 * dt * (sfica * ICa - k2 * sbetaca);
+    double k4 = k1 + dt * (sfica * ICa - k1 * sbetaca);
     CCa = (k1 + 2*k2 + 2*k3 + k4) / 6;
 }
 
@@ -77,6 +76,8 @@ void Compartment::integrate(double dt, double duration) {
 
 
             double Ich = channels[i] -> get_current();
+
+
             I += Ich;
 
 
@@ -86,12 +87,10 @@ void Compartment::integrate(double dt, double duration) {
 
 
         };
-        // cout << endl;
+
 
 
         I += Isyn;
-
-        // fs.write((char*) &V, sizeof (V));
 
         V = V + dt * (I / Capacity);
 
