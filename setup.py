@@ -14,7 +14,7 @@ cpp_part_path = "./CplusplusPart/src/"
 
 sources_cpp = os.listdir(cpp_part_path)
 
-sources = ["lib.pyx"]
+sources = ["lib.pyx", ]
 
 for file in sources_cpp:
     file_name, ext = os.path.splitext(file)
@@ -28,16 +28,16 @@ ext_modules=[
               libraries=["m"],
               extra_compile_args = ["-std=c++11", "-O3", "-ffast-math", "-march=native", "-fopenmp" ],
               extra_link_args=['-fopenmp'],
-              include_dirs=[numpy.get_include(), "./CplusplusPart/src/"]
+              include_dirs=[numpy.get_include(), "./CplusplusPart/src/", "./CplusplusPart/include/", ]
               ) 
 ]
 
 setup( 
-  name = "lib",
+    name = "lib",
+    cmdclass = {"build_ext": build_ext},
+    ext_modules = ext_modules,
+    include_dirs=[numpy.get_include()],
 
-  cmdclass = {"build_ext": build_ext},
-  ext_modules = ext_modules,
-  include_dirs=[numpy.get_include()]
 )
 
 
