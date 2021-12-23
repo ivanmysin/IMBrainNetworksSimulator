@@ -30,7 +30,9 @@ class BaseChannel {
         // void set_isCa(bool isCa_);
         double get_current();
         void set_precomp(vector <double> precomp_param);
-        double get_gate(){return gates[0];}; // !!!!!!!
+        double get_gate1(){return gates[0];}; // !!!!!!!
+        double get_gate2(){return gates[1];}; // !!!!!!!
+
 
         void set_is_useCCainInfTau_by_idx(int idx, bool is_useCa){is_useCCainInfTau[idx] = is_useCa;};
         void set_ca_sensytive(bool sensitive){is_ca_sensytive = sensitive;};

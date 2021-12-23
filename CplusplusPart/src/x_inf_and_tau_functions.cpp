@@ -204,7 +204,7 @@ double ca1_neuron_params::alpha_s(double V) {
 double ca1_neuron_params::beta_s(double V) {
     double x = V - 51.1;
     if (x == 0) {
-     double x = 0.00001;
+        x = 0.00001;
     };
     double beta = 0.02 * x / (exp(0.2 * x) - 1);
     return beta;

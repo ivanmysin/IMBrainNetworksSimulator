@@ -1,7 +1,7 @@
 #ifndef INTERCOMPARTMENTCONNECTION_H
 #define INTERCOMPARTMENTCONNECTION_H
-#include "../Compartment.h"
-#include "../BaseSynapse.h"
+#include "Compartment.h"
+#include "BaseSynapse.h"
 
 
 
@@ -10,7 +10,7 @@ class Compartment;
 class IntercompartmentConnection {
     public:
         IntercompartmentConnection(Compartment * comp1_, Compartment * comp2_, double g_, double p_);
-        void integrate(double, double);
+        void integrate();
         virtual ~IntercompartmentConnection();
 
     protected:

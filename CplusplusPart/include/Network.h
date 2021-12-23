@@ -6,10 +6,10 @@
 #include <string>
 #include <vector>
 #include <string.h>
-#include "../Compartment.h"
+#include "Compartment.h"
 #include "Neuron.h"
 #include "Monitor.h"
-#include "../BaseSynapse.h"
+#include "BaseSynapse.h"
 
 
 using namespace std;

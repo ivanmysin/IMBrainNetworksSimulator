@@ -5,7 +5,7 @@ Neuron::Neuron(vector <Compartment *> compartments_,  vector <IntercompartmentCo
     connections = connections_;
 
     Vth = 0;
-    countSp = true;
+    countSp = false;
 }
 
 
@@ -18,12 +18,12 @@ void Neuron::integrate(double dt, double duration) {
     double t = 0;
     while (t < duration) {
 
-        for (int i = 0; i < connections.size(); i++) {
-            connections[i] -> integrate(dt, dt);
-        }
-
         for (int i = 0; i < compartments.size(); i++) {
             compartments[i] -> integrate(dt, dt);
+        }
+
+        for (int i = 0; i < connections.size(); i++) {
+            connections[i] -> integrate();
         }
 
         t += dt;
@@ -42,7 +42,7 @@ double Neuron::get_somaV() {
 bool Neuron::check_is_fired() {
 
     double V = compartments[0] -> getV();
-    bool isFired = false;
+    bool isFired;
     if (countSp || V >= Vth) {
         isFired = true;
         countSp = false;
@@ -50,10 +50,12 @@ bool Neuron::check_is_fired() {
 
     if (V < Vth) {
         countSp = true;
+
     }
 
 
     return isFired;
+
 
 }
 

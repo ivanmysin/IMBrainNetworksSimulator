@@ -1,6 +1,6 @@
 #ifndef NEURON_H
 #define NEURON_H
-#include "../Compartment.h"
+#include "Compartment.h"
 #include "IntercompartmentConnection.h"
 
 #include <math.h>

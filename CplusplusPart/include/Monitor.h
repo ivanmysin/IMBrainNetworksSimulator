@@ -40,7 +40,7 @@ class Monitor : public BaseMonitor
         Monitor( double (T::*getter_)(),  T * obj_ ){
             getter = getter_;
             obj =  obj_;
-            vector <double> kept_vals;
+            this->keep_val();
         };
         void keep_val() {
 

@@ -14,7 +14,6 @@ Compartment::Compartment(vector<double> main_params, vector <BaseChannel *> chan
     is_sim_Ca = false;
     for (int i = 0; i < channels.size(); i++) {
         channels[i] -> set_compartment(this);
-
         if ( channels[i] -> get_isCa() ) {
             is_sim_Ca = true;
         }
@@ -61,9 +60,6 @@ void Compartment::integrate(double dt, double duration) {
 
     double t = 0;
 
-    // ofstream fs;
-    //fs.open("log/potential.bin", ios::out | ios::binary);
-
     while (t < duration) {
 
 
@@ -71,41 +67,26 @@ void Compartment::integrate(double dt, double duration) {
         double Ica = 0.0;
 
         for (int i = 0; i < channels.size(); i++) {
-
             channels[i] -> integrate(dt, dt);
-
-
             double Ich = channels[i] -> get_current();
-
-
+            cout << Ich << " ";
             I += Ich;
-
-
             if ( channels[i] -> get_isCa() ) {
-                Ica +=Ich;
+                Ica += Ich;
             }
-
 
         };
 
-
+        cout << " \n";
 
         I += Isyn;
-
         V = V + dt * (I / Capacity);
-
         if (is_sim_Ca) {
             this -> integrate_cca(Ica, dt);
         }
-
-
-
         Isyn = 0;
 
         t += dt;
     }
-    // fs.write((char*) &V, sizeof (V));
-    // cout << V << endl;
-    // fs.close();
 
 };

@@ -1,8 +1,10 @@
 $ cat .gitignore
 
 test.py
-lib.py
 .directory
+lib.cpp
+lib.cpython-36m-x86_64-linux-gnu.so
+/build/
 /.idea/
 /__pycache__/
 /CplusplusPart/*.cbp
@@ -10,3 +12,5 @@ lib.py
 /CplusplusPart/bin/
 /CplusplusPart/obj/
 /CplusplusPart/log/
+
+lib_trtr.py

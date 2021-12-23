@@ -14,7 +14,7 @@ using namespace std;
 
 void run_fs_neuron();
 Neuron * get_fs_neuron();
-Compartment * get_pyr_compartment();
+Compartment * get_pyr_compartment(int);
 
 int main() {
 
@@ -24,20 +24,30 @@ int main() {
 
     Network* net = new Network();
 
-    Compartment * soma = get_pyr_compartment();
+    Compartment * soma = get_pyr_compartment(0);
+    Compartment * dend = get_pyr_compartment(1);
+
+    IntercompartmentConnection * conn = new IntercompartmentConnection(soma, dend, 1.5, 0.5);
+    vector <Compartment *> comps = vector <Compartment *> {soma, dend};
+    vector <IntercompartmentConnection *> conns = vector <IntercompartmentConnection *> {conn}; // (); //
+
 
     BaseMonitor * soma_mon = new Monitor <Compartment> ( &Compartment::getV, soma  ) ;
-
-    Neuron * neuron = new Neuron(soma);
+    BaseMonitor * dend_mon = new Monitor <Compartment> ( &Compartment::getV, dend  ) ;
+    Neuron * neuron = new Neuron(comps, conns);
 
     net->add_neuron(neuron);
     net->add_monitor(soma_mon);
+    net->add_monitor(dend_mon);
 
-    net->integrate(0.1, 300);
+    net->integrate(0.1, 3000.0);
 
 
-    string path = "./log/potential1.bin";
+    string path = "./log/potential_soma.bin";
     soma_mon->save2file(path);
+
+    path = "./log/potential_dendrite.bin";
+    dend_mon->save2file(path);
 
     cout << "Calutations are finished! " << endl;
 
@@ -178,7 +188,7 @@ Neuron* get_fs_neuron() {
 };
 
 
-Compartment * get_pyr_compartment() {
+Compartment * get_pyr_compartment(int n_comp) {
     vector <BaseChannel *> channels;
 
     BaseChannel * leak_ch = new BaseChannel(0.1, 0.0);
@@ -206,8 +216,10 @@ Compartment * get_pyr_compartment() {
 
 
     BaseChannel * sodium_ch = new BaseChannel(30.0, 120.0, false, get_mh_tau, get_mh_inf, mh_gates_degrees);
-    channels.push_back(sodium_ch);
 
+    if ( n_comp == 0 ) {
+        channels.push_back(sodium_ch);
+    };
 
 
     vector <double (*)(double)> get_n_tau;
@@ -225,9 +237,9 @@ Compartment * get_pyr_compartment() {
 
      // double gmax_, double Erev_, vector <double (*)(double)> get_x_tau_, vector <double (*)(double)> get_x_inf_, vector <double> gates_degrees
     BaseChannel * potassium_ch_dr = new BaseChannel(17.0, -15.0, false, get_n_tau, get_n_inf, n_gates_degrees);
-    channels.push_back(potassium_ch_dr);
-
-
+    if ( n_comp == 0 ) {
+        channels.push_back(potassium_ch_dr);
+    };
 
 
     vector <double (*)(double)> get_q_tau;
@@ -251,13 +263,28 @@ Compartment * get_pyr_compartment() {
     get_c_tau.push_back(&(ca1_neuron_params::c_tau));
     get_c_inf.push_back(&(ca1_neuron_params::c_inf));
 
+
+    double gbarC;
+    if ( n_comp == 0 ) {
+        gbarC = 15.0;
+    } else {
+        gbarC = 5.0;
+    };
+
     vector <double> c_gates_degrees;
     c_gates_degrees.push_back(1.0);
-    BaseChannel * potassium_ch_c = new BaseChannel(15.0, -15.0, false, get_c_tau, get_c_inf, c_gates_degrees);
+    BaseChannel * potassium_ch_c = new BaseChannel(gbarC, -15.0, false, get_c_tau, get_c_inf, c_gates_degrees);
     potassium_ch_c->set_ca_sensytive(true);
     channels.push_back(potassium_ch_c);
 
 
+
+    double gbarCa;
+    if ( n_comp == 0 ) {
+        gbarCa = 6.0;
+    } else {
+        gbarCa = 5.0;
+    };
     vector <double (*)(double)> get_s_tau;
     vector <double (*)(double)> get_s_inf;
 
@@ -265,12 +292,12 @@ Compartment * get_pyr_compartment() {
     get_s_inf.push_back(&(ca1_neuron_params::s_inf));
     vector <double> s_gates_degrees;
     s_gates_degrees.push_back(2.0);
-    BaseChannel * calcium_ch = new BaseChannel(6.0, 140.0, true, get_s_tau, get_s_inf, s_gates_degrees);
+    BaseChannel * calcium_ch = new BaseChannel(gbarCa, 140.0, true, get_s_tau, get_s_inf, s_gates_degrees);
     channels.push_back(calcium_ch);
 
     vector <double> main_params;
     main_params.push_back(0.0); // V0
-    main_params.push_back(1.0); // Iext_mean
+    main_params.push_back(1.4); // Iext_mean
     main_params.push_back(0.0); // Iext_std
     main_params.push_back(3.0); // Capacity
 

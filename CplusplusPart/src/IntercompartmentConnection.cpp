@@ -8,14 +8,14 @@ IntercompartmentConnection::IntercompartmentConnection(Compartment * comp1_, Com
 }
 
 
-void IntercompartmentConnection::integrate(double, double) {
+void IntercompartmentConnection::integrate() {
 
     double V1 = comp1 -> getV();
     double V2 = comp2 -> getV();
 
 
-    double I1 = -(g / p) * (V2 - V1);
-    double I2 = -( g / (1 - p)) * (V1 - V2);
+    double I1 = (g / p) * (V2 - V1);
+    double I2 = ( g / (1 - p)) * (V1 - V2);
 
 
     comp1 -> addIsyn(I1);

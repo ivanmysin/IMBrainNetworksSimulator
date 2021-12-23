@@ -45,6 +45,7 @@ Network::~Network() {
 // intergrate model
 void Network::integrate (double dt, double duration) {
 
+
     double t=0;
     while (t < duration) {
 
@@ -61,10 +62,10 @@ void Network::integrate (double dt, double duration) {
             synapses[i]->integrate(dt, dt);
         }
 
-        for (int i = 0; i < monitors.size(); i++) { // integrate all synapses by one time step
+        for (int i = 0; i < monitors.size(); i++) { // save all valus
              monitors[i]->keep_val();
         }
 
-        t+=dt;
+        t += dt;
     }
 }
